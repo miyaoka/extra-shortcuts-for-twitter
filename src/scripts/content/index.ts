@@ -43,17 +43,17 @@ const focusExtLink = () => {
   linkFocusIndex = (linkFocusIndex + 1) % extLinks.length
 }
 
-const getArticle = (el: HTMLElement): HTMLElement | null => {
+const getContainerArticle = (el: HTMLElement): HTMLElement | null => {
   const parent = el.parentElement
   if (!parent) return null
   if (parent.tagName === 'ARTICLE') return parent
-  return getArticle(parent)
+  return getContainerArticle(parent)
 }
 const focusOut = () => {
   resetLinkFocus()
 
   if (!target) return
-  const article = getArticle(target)
+  const article = getContainerArticle(target)
   article?.focus()
 }
 
