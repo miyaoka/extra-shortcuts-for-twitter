@@ -64,8 +64,29 @@ const focusOut = () => {
   article?.focus()
 }
 
+const getFocusTarget = (offset: number) => {
+  const currentFocus = document.querySelector('article:focus')
+  const articles = Array.from(document.querySelectorAll('article'))
+  if (currentFocus) {
+    const index = articles.findIndex(article => article === currentFocus)
+    return articles[index + offset]
+  }
+  return articles[0]
+}
+
+const focusTweet = (evt: KeyboardEvent, offset: number) => {
+  const target = getFocusTarget(offset)
+  if (!target) return
+  evt.preventDefault()
+  evt.stopPropagation()
+  target.focus()
+  onFocusTweet()
+}
+
 const keyDefs: KeyDefs = [
   [['j', 'k'], () => onFocusTweet()],
+  [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
+  [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
   [['e'], () => focusExtLink()],
   [['escape'], () => focusOut()]
 ]
@@ -124,7 +145,7 @@ const onKeyDown = (e: KeyboardEvent) => {
 
   keymap.some(([keyReg, action]) => {
     if (!keyReg.test(code)) return false
-    if (action()) {
+    if (action(e)) {
       e.preventDefault()
     }
     return true
