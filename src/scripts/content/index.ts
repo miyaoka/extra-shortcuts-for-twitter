@@ -3,12 +3,19 @@ type KeyDefs = [(string | string[])[], Function][]
 let linkFocusIndex = 0
 let extLinks: HTMLAnchorElement[] = []
 let focusAnchorTarget: HTMLAnchorElement | null = null
+
+const xLinkSelectors = ['[data-testid=tweet]', '[lang]'].map(
+  container => `article ${container} a[target=_blank]`
+)
+const quoteSelector = '[role=blockquote]'
+const focusSelector = [...xLinkSelectors, quoteSelector].join(',')
+
 const getExtLinks = () => {
   const target = document.querySelector('article:focus')
   if (!target) return []
 
   const list = Array.from(
-    target.querySelectorAll('a[target=_blank]')
+    target.querySelectorAll(focusSelector)
   ) as HTMLAnchorElement[]
 
   return list.filter(item => item.innerText)
