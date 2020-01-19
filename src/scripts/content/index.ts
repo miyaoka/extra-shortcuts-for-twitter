@@ -87,7 +87,7 @@ const keyDefs: KeyDefs = [
   [['j', 'k'], () => onFocusTweet()],
   [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
   [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
-  [['e'], () => focusExtLink()],
+  [['e', 'arrowright'], () => focusExtLink()],
   [['escape'], () => focusOut()]
 ]
 
