@@ -4,9 +4,7 @@ let linkFocusIndex = 0
 let extLinks: HTMLAnchorElement[] = []
 let target: HTMLAnchorElement | null = null
 const getExtLinks = () => {
-  const target = document.querySelector(
-    'article[data-focusvisible-polyfill=true]'
-  )
+  const target = document.querySelector('article:focus')
   if (!target) return []
 
   const list = Array.from(
@@ -48,7 +46,6 @@ const focusExtLink = () => {
 const getArticle = (el: HTMLElement): HTMLElement | null => {
   const parent = el.parentElement
   if (!parent) return null
-  console.log(parent, parent.tagName)
   if (parent.tagName === 'ARTICLE') return parent
   return getArticle(parent)
 }
