@@ -84,12 +84,28 @@ const focusTweet = (evt: KeyboardEvent, offset: number) => {
   onFocusTweet()
 }
 
+const nextPhoto = () => {
+  const next = document.querySelector('[aria-label=Next]') as HTMLElement | null
+  if (!next) return
+
+  if (!next.getAttribute('aria-disabled')) {
+    next.click()
+    return
+  }
+  const close = document.querySelector(
+    '[aria-label=Close]'
+  ) as HTMLElement | null
+  if (!close) return
+  close.click()
+}
+
 const keyDefs: KeyDefs = [
   [['j', 'k'], () => onFocusTweet()],
   [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
   [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
   [['e', 'arrowright'], () => focusExtLink()],
-  [['escape', 'arrowleft'], () => focusOutFromLinkInTweet()]
+  [['escape', 'arrowleft'], () => focusOutFromLinkInTweet()],
+  [['o'], () => nextPhoto()]
 ]
 
 const combineKey = (keys: string[]) =>
