@@ -2,7 +2,7 @@ type KeyDefs = [(string | string[])[], Function][]
 
 let linkFocusIndex = 0
 let extLinks: HTMLAnchorElement[] = []
-let target: HTMLAnchorElement | null = null
+let focusAnchorTarget: HTMLAnchorElement | null = null
 const getExtLinks = () => {
   const target = document.querySelector('article:focus')
   if (!target) return []
@@ -33,13 +33,13 @@ const focusExtLink = () => {
     extLink.setAttribute('style', 'background: rgba(255,255,0,.4)')
   })
 
-  target = extLinks[linkFocusIndex]
-  if (!target) return
-  target.setAttribute(
+  focusAnchorTarget = extLinks[linkFocusIndex]
+  if (!focusAnchorTarget) return
+  focusAnchorTarget.setAttribute(
     'style',
     `background: rgba(255,255,0,1); outline: 1px solid #990`
   )
-  target.focus()
+  focusAnchorTarget.focus()
   linkFocusIndex = (linkFocusIndex + 1) % extLinks.length
 }
 
@@ -52,8 +52,8 @@ const getContainerArticle = (el: HTMLElement): HTMLElement | null => {
 const focusOut = () => {
   resetLinkFocus()
 
-  if (!target) return
-  const article = getContainerArticle(target)
+  if (!focusAnchorTarget) return
+  const article = getContainerArticle(focusAnchorTarget)
   article?.focus()
 }
 
@@ -99,10 +99,21 @@ const getCombinedKeyCode = (e: KeyboardEvent) => {
 }
 
 const onKeyDown = (e: KeyboardEvent) => {
+  // ignore when input tweet or search terms
+  if (e.target) {
+    const target = e.target as HTMLElement
+    if (
+      target.contentEditable === 'true' ||
+      /^(input|textarea)$/i.test(target.tagName)
+    ) {
+      return
+    }
+  }
+
+  // ignore modkey
   if (modKeyReg.test(e.key)) return
 
   const code = getCombinedKeyCode(e)
-  console.log(code)
 
   keymap.some(([keyReg, action]) => {
     if (!keyReg.test(code)) return false
@@ -122,13 +133,6 @@ const activateKeyHandler = (isActive: boolean) => {
 }
 
 const init = () => {
-  const formInputs = document.querySelectorAll('input, textarea')
-
-  formInputs.forEach(el => {
-    el.addEventListener('focusin', () => activateKeyHandler(false))
-    el.addEventListener('focusout', () => activateKeyHandler(true))
-  })
-
   activateKeyHandler(true)
 }
 
