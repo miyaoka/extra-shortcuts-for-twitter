@@ -2,6 +2,10 @@
 
 > Add extra keyboard shortcuts for Twitter
 
+## Demo
+
+https://twitter.com/miyaoka/status/1218899078320287750
+
 ## Build Setup
 
 ### install
