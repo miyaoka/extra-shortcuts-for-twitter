@@ -29,7 +29,10 @@ const resetLinkFocus = () => {
   })
 }
 
-const focusLink = () => {
+const focusLink = (evt: KeyboardEvent) => {
+  evt.preventDefault()
+  evt.stopPropagation()
+
   extLinks.forEach(extLink => {
     extLink.setAttribute('style', 'background: rgba(255,255,0,.4)')
   })
@@ -104,8 +107,8 @@ const keyDefs: KeyDefs = [
   [['j', 'k'], () => onFocusTweet()],
   [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
   [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
-  [['e', 'arrowright'], () => focusLink()],
-  [['escape', 'arrowleft'], () => blurLink()],
+  [['e', 'l', 'arrowright'], (e: KeyboardEvent) => focusLink(e)],
+  [['escape', 'h', 'arrowleft'], () => blurLink()],
   [['o'], () => nextPhoto()]
 ]
 
