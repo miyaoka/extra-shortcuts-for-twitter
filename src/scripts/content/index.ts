@@ -9,6 +9,7 @@ const xLinkSelectors = ['[data-testid=tweet]', '[lang]'].map(
 )
 const quoteSelector = '[role=blockquote]'
 const focusSelector = [...xLinkSelectors, quoteSelector].join(',')
+const articleSelector = 'article:not([style*="display: none"])'
 
 const getExtLinks = () => {
   const target = document.querySelector('article:focus')
@@ -60,7 +61,7 @@ const blurLink = () => {
 
 const getFocusTarget = (offset: number) => {
   const currentFocus = document.querySelector('article:focus')
-  const articles = Array.from(document.querySelectorAll('article'))
+  const articles = Array.from(document.querySelectorAll(articleSelector))
   if (currentFocus) {
     const index = articles.findIndex(article => article === currentFocus)
     return articles[index + offset]
