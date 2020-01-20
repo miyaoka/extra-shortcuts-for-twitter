@@ -28,7 +28,7 @@ const resetLinkFocus = () => {
   })
 }
 
-const focusExtLink = () => {
+const focusLink = () => {
   extLinks.forEach(extLink => {
     extLink.setAttribute('style', 'background: rgba(255,255,0,.4)')
   })
@@ -49,7 +49,7 @@ const getContainerArticle = (el: HTMLElement): HTMLElement | null => {
   if (parent.tagName === 'ARTICLE') return parent
   return getContainerArticle(parent)
 }
-const focusOutFromLinkInTweet = () => {
+const blurLink = () => {
   resetLinkFocus()
 
   if (!focusAnchorTarget) return
@@ -68,14 +68,14 @@ const getFocusTarget = (offset: number) => {
   return articles[0]
 }
 const onFocusTweet = () => {
-  focusOutFromLinkInTweet()
+  blurLink()
   window.requestAnimationFrame(() => {
     extLinks = getExtLinks()
     resetLinkFocus()
   })
 }
 const focusTweet = (evt: KeyboardEvent, offset: number) => {
-  focusOutFromLinkInTweet()
+  blurLink()
   const target = getFocusTarget(offset)
   if (!target) return
   evt.preventDefault()
@@ -103,8 +103,8 @@ const keyDefs: KeyDefs = [
   [['j', 'k'], () => onFocusTweet()],
   [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
   [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
-  [['e', 'arrowright'], () => focusExtLink()],
-  [['escape', 'arrowleft'], () => focusOutFromLinkInTweet()],
+  [['e', 'arrowright'], () => focusLink()],
+  [['escape', 'arrowleft'], () => blurLink()],
   [['o'], () => nextPhoto()]
 ]
 
