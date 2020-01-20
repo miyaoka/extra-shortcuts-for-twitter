@@ -64,9 +64,9 @@ const getFocusTarget = (offset: number) => {
   const articles = Array.from(document.querySelectorAll(articleSelector))
   if (currentFocus) {
     const index = articles.findIndex(article => article === currentFocus)
-    return articles[index + offset]
+    return articles[index + offset] as HTMLElement | null
   }
-  return articles[0]
+  return articles[0] as HTMLElement | null
 }
 const onFocusTweet = () => {
   blurLink()
