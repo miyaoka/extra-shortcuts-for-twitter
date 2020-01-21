@@ -103,12 +103,25 @@ const nextPhoto = () => {
   close.click()
 }
 
+const navBack = (evt: KeyboardEvent) => {
+  const back = document.querySelector(
+    '[aria-label="Back"]'
+  ) as HTMLElement | null
+  if (back) {
+    evt.preventDefault()
+    evt.stopPropagation()
+    back.click()
+    return
+  }
+  blurLink()
+}
+
 const keyDefs: KeyDefs = [
-  [['j', 'k'], () => onFocusTweet()],
+  [['j', 'k'], onFocusTweet],
   [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
   [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
-  [['e', 'l', 'arrowright'], (e: KeyboardEvent) => focusLink(e)],
-  [['escape', 'h', 'arrowleft'], () => blurLink()],
+  [['e', 'l', 'arrowright'], focusLink],
+  [['escape', 'h', 'arrowleft'], navBack],
   [['o'], () => nextPhoto()]
 ]
 
