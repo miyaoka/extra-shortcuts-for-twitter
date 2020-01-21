@@ -4,6 +4,11 @@ let linkFocusIndex = 0
 let extLinks: HTMLAnchorElement[] = []
 let focusAnchorTarget: HTMLAnchorElement | null = null
 
+const $ = (selector: string): HTMLElement | null =>
+  document.querySelector(selector)
+const $$ = (selector: string): NodeListOf<HTMLElement> =>
+  document.querySelectorAll(selector)
+
 const xLinkSelectors = ['[data-testid=tweet]', '[lang]'].map(
   container => `article ${container} a[target=_blank]`
 )
@@ -12,7 +17,7 @@ const focusSelector = [...xLinkSelectors, quoteSelector].join(',')
 const articleSelector = 'article:not([style*="display: none"])'
 
 const getExtLinks = () => {
-  const target = document.querySelector('article:focus')
+  const target = $('article:focus')
   if (!target) return []
 
   const list = Array.from(
@@ -62,14 +67,14 @@ const blurLink = () => {
   article?.focus()
 }
 
-const getFocusTarget = (offset: number) => {
-  const currentFocus = document.querySelector('article:focus')
-  const articles = Array.from(document.querySelectorAll(articleSelector))
+const getFocusTarget = (offset: number): HTMLElement | null => {
+  const currentFocus = $('article:focus')
+  const articles = Array.from($$(articleSelector))
   if (currentFocus) {
     const index = articles.findIndex(article => article === currentFocus)
-    return articles[index + offset] as HTMLElement | null
+    return articles[index + offset]
   }
-  return articles[0] as HTMLElement | null
+  return articles[0]
 }
 const onFocusTweet = () => {
   blurLink()
@@ -89,24 +94,20 @@ const focusTweet = (evt: KeyboardEvent, offset: number) => {
 }
 
 const nextPhoto = () => {
-  const next = document.querySelector('[aria-label=Next]') as HTMLElement | null
+  const next = $('[aria-label=Next]')
   if (!next) return
 
-  if (!next.getAttribute('aria-disabled')) {
+  if (!next.getAttribute('[aria-disabled]')) {
     next.click()
     return
   }
-  const close = document.querySelector(
-    '[aria-label=Close]'
-  ) as HTMLElement | null
+  const close = $('[aria-label=Close]')
   if (!close) return
   close.click()
 }
 
 const navBack = (evt: KeyboardEvent) => {
-  const back = document.querySelector(
-    '[aria-label="Back"]'
-  ) as HTMLElement | null
+  const back = $('[aria-label="Back"]')
   if (back) {
     evt.preventDefault()
     evt.stopPropagation()
