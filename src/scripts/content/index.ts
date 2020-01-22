@@ -95,9 +95,8 @@ const focusTweet = (evt: KeyboardEvent, offset: number) => {
 
 const nextPhoto = () => {
   const next = $('[aria-label=Next]')
-  if (!next) return
 
-  if (next.getAttribute('disabled') == null) {
+  if (next && next.getAttribute('disabled') == null) {
     next.click()
     return
   }
