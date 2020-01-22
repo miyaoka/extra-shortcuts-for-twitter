@@ -97,7 +97,7 @@ const nextPhoto = () => {
   const next = $('[aria-label=Next]')
   if (!next) return
 
-  if (!next.getAttribute('[aria-disabled]')) {
+  if (next.getAttribute('disabled') == null) {
     next.click()
     return
   }
