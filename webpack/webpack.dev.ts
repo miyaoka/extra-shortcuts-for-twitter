@@ -25,6 +25,7 @@ export default merge(commonConfig, {
             {
               ...manifest,
               version: pkg.version,
+              name: `[dev] ${manifest.name}`,
               background: {
                 ...background,
                 scripts: [...scripts, 'scripts/hotReload.js']
