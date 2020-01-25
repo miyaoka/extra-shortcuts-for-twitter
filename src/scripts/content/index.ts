@@ -118,10 +118,15 @@ const navPhoto = () => {
   close.click()
 }
 
+const getFocusedVideo = () => {
+  return (document.fullscreenElement ||
+    $('article:focus video')) as HTMLVideoElement | null
+}
+
 const navMedia = () => {
-  const video = $('article:focus video')
+  const video = getFocusedVideo()
   if (video) {
-    navVideo(video as HTMLVideoElement)
+    navVideo(video)
     return true
   }
   navPhoto()
@@ -138,13 +143,26 @@ const navBack = (evt: KeyboardEvent) => {
   blurLink()
 }
 
+const toggleFullscreen = () => {
+  const video = getFocusedVideo()
+  if (!video) return
+
+  if (document.fullscreen) {
+    document.exitFullscreen()
+    video.pause()
+  } else {
+    video.requestFullscreen()
+  }
+}
+
 const keyDefs: KeyDefs = [
   [['j', 'k'], onFocusTweet],
   [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
   [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
   [['e', 'l', 'arrowright'], focusLink],
   [['escape', 'arrowleft'], navBack],
-  [['o'], () => navMedia()]
+  [['o'], () => navMedia()],
+  [['f'], () => toggleFullscreen()]
 ]
 
 const combineKey = (keys: string[]) =>
