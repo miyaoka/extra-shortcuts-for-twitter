@@ -93,7 +93,18 @@ const focusTweet = (evt: KeyboardEvent, offset: number) => {
   onFocusTweet()
 }
 
-const nextPhoto = () => {
+const navVideo = (video: HTMLVideoElement) => {
+  video.muted = !video.muted
+
+  if (video.muted) {
+    video.pause()
+  } else {
+    video.currentTime = 0
+    video.play()
+  }
+}
+
+const navPhoto = () => {
   const next = $('[aria-label=Next]')
 
   if (next && next.getAttribute('disabled') == null) {
@@ -103,6 +114,15 @@ const nextPhoto = () => {
   const close = $('[aria-label=Close]')
   if (!close) return
   close.click()
+}
+
+const navMedia = () => {
+  const video = $('article:focus video')
+  if (video) {
+    navVideo(video as HTMLVideoElement)
+    return true
+  }
+  navPhoto()
 }
 
 const navBack = (evt: KeyboardEvent) => {
@@ -121,8 +141,8 @@ const keyDefs: KeyDefs = [
   [['arrowdown'], (e: KeyboardEvent) => focusTweet(e, 1)],
   [['arrowup'], (e: KeyboardEvent) => focusTweet(e, -1)],
   [['e', 'l', 'arrowright'], focusLink],
-  [['escape', 'h', 'arrowleft'], navBack],
-  [['o'], () => nextPhoto()]
+  [['escape', 'arrowleft'], navBack],
+  [['o'], () => navMedia()]
 ]
 
 const combineKey = (keys: string[]) =>
