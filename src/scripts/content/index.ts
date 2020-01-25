@@ -94,13 +94,15 @@ const focusTweet = (evt: KeyboardEvent, offset: number) => {
 }
 
 const navVideo = (video: HTMLVideoElement) => {
-  video.muted = !video.muted
-
-  if (video.muted) {
-    video.pause()
-  } else {
+  if (video.paused) {
+    video.muted = false
     video.currentTime = 0
     video.play()
+    video.setAttribute('style', 'opacity: inherit')
+  } else {
+    video.muted = true
+    video.pause()
+    video.setAttribute('style', 'opacity: 0.5')
   }
 }
 
