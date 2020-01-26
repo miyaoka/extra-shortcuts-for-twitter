@@ -108,14 +108,15 @@ const navVideo = (video: HTMLVideoElement) => {
 
 const navPhoto = () => {
   const next = $('[aria-label=Next]')
-
   if (next && next.getAttribute('disabled') == null) {
     next.click()
     return
   }
   const close = $('[aria-label=Close]')
-  if (!close) return
-  close.click()
+  if (close) {
+    history.back()
+    return
+  }
 }
 
 const getFocusedVideo = () => {
@@ -134,10 +135,9 @@ const navMedia = () => {
 
 const navBack = (evt: KeyboardEvent) => {
   const back = $('[aria-label="Back"]')
-  if (back) {
+  if (back && history.state) {
     evt.preventDefault()
-    evt.stopPropagation()
-    back.click()
+    history.back()
     return
   }
   blurLink()
