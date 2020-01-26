@@ -95,14 +95,14 @@ const focusTweet = (evt: KeyboardEvent, offset: number) => {
 
 const navVideo = (video: HTMLVideoElement) => {
   if (video.paused) {
-    video.muted = false
     video.currentTime = 0
     video.play()
     video.setAttribute('style', 'opacity: inherit')
+    video.muted = false
   } else {
-    video.muted = true
     video.pause()
     video.setAttribute('style', 'opacity: 0.5')
+    video.muted = true
   }
 }
 
@@ -110,12 +110,12 @@ const navPhoto = () => {
   const next = $('[aria-label=Next]')
   if (next && next.getAttribute('disabled') == null) {
     next.click()
-    return
+    return true
   }
   const close = $('[aria-label=Close]')
   if (close) {
     history.back()
-    return
+    return true
   }
 }
 
@@ -130,15 +130,14 @@ const navMedia = () => {
     navVideo(video)
     return true
   }
-  navPhoto()
+  return navPhoto()
 }
 
-const navBack = (evt: KeyboardEvent) => {
+const navBack = () => {
   const back = $('[aria-label="Back"]')
   if (back && history.state) {
-    evt.preventDefault()
     history.back()
-    return
+    return true
   }
   blurLink()
 }
@@ -153,6 +152,7 @@ const toggleFullscreen = () => {
   } else {
     video.requestFullscreen()
   }
+  return true
 }
 
 const keyDefs: KeyDefs = [
@@ -221,6 +221,7 @@ const onKeyDown = (e: KeyboardEvent) => {
     if (!keyReg.test(code)) return false
     if (action(e)) {
       e.preventDefault()
+      e.stopPropagation()
     }
     return true
   })
